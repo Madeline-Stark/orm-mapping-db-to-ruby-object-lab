@@ -26,11 +26,15 @@ class Student
     DB[:conn].execute(sql,name).map do |row|
       self.new_from_db(row)
     end.first
+
+    # or:
+    row = DB[:conn].execute(sql, name).flatten
+    self.new_from_db(row)
   end
 
   def self.all_students_in_grade_9
     sql = <<-SQL
-      SELECT COUNT(*)
+      SELECT *
       FROM students
       WHERE grade = 9;
     SQL
@@ -82,6 +86,7 @@ class Student
   end
 
   def self.first_student_in_grade_10
+    # could just use x students in method
     sql = <<-SQL
       SELECT *
       FROM students
